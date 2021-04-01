@@ -6,25 +6,32 @@ import FolderForm from './FolderForm';
 function FolderContainer() {
     const [folders, setFolders] = useState([]);
 
-    function addFolder( folder ) {
+    const addFolder = ( folder ) => {
         setFolders([folder, ...folders]);
     }
 
-    function deleteFolder(id) {
-        setFolders(folders.filter(folder => folder.id_folder !== id));
+    const deleteFolder = (id) => {
+        setFolders(folders.filter(folder => folder.idFolder !== id));
     }
 
-    useEffect(() => {  
-        FolderService.getAll().then(data => {
-            if(data){
-                setFolders(data);
-            }
-        });
+    useEffect(() => {
+        const getFolders = () => {
+            FolderService.getAll().then(data => {
+                if(data){
+                    setFolders(data);
+                }
+            });
+        }
+        
+        getFolders();
     }, []);
 
     return (
         <div className="container mt-4 p-4 bg-light">
-            <h1>Folders</h1>
+            <div className="h1 bg-dark text-white p-2">
+                Folders
+            </div>
+            <hr />
             <FolderForm addFolder={addFolder}/>
             <FolderList folders={folders} deleteFolder={deleteFolder}/>
         </div>

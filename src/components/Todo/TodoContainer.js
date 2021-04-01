@@ -2,51 +2,57 @@ import React, {useState, useEffect} from 'react';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
 import FolderService from '../../service/FolderService';
+import {Link} from 'react-router-dom';
 
 function TodoContainer({ match }) {
     const [folder, setFolder] = useState({
-        id_folder: 0, 
+        idFolder: 0, 
         name: ""
     });
     const [todos, setTodos] = useState([]);
     const [editTodo, setEditTodo] = useState(null);
 
-    function addTodo( todo ) {
+    const addTodo = ( todo ) => {
         setTodos([todo, ...todos]);
     }
 
-    function updateTodoList( todo ) {
+    const updateTodoList = ( todo ) => {
         const todosAux = [...todos].map(t => {
-        if (t.id_task === todo.id_task) {
-            t = todo;
-        }
-        return t;
+            if (t.idTask === todo.idTask) {
+                t = todo;
+            }
+            return t;
         });
         setTodos(todosAux);
     }
 
-    useEffect(() => {  
-        // TodoService.getAll().then(data => {
-        //     if(data){
-        //         setTodos(data);
-        //     }
-        // });
-        FolderService.getByID( match.params.idFolder ).then(data => {
-            if(data){
-                setTodos(data.tasks);
-                setFolder({
-                    id_folder: data.id_folder, 
-                    name: data.name
-                });
-            }
-        });
-    }, []);
+    useEffect( () => {
+        const getTodos = () => {
+            FolderService.getByID( match.params.idFolder ).then(data => {
+                if(data){
+                    if(data.tasks) {
+                        setTodos(data.tasks);
+                    }
+                    setFolder({
+                        idFolder: data.idFolder, 
+                        name: data.name
+                    });
+                }
+            });
+        }
+        
+        getTodos();
+    }, [match.params.idFolder]);
+    
 
     return (
         <div className="container mt-4 p-4 bg-light">
-            <h1>{folder.name}</h1>
+            <div className="h1 bg-dark text-white p-2">
+                <Link to={"/"}>Folders</Link> / {folder.name}
+            </div>
+            <hr />
             <TodoForm addTodo={addTodo} folder={folder} editTodo={editTodo} setEditTodo={setEditTodo} updateTodoList={updateTodoList}/>
-            <TodoList todos={todos} folder={folder} setEditTodo={setEditTodo}/>
+            <TodoList todos={todos} folder={folder} setEditTodo={setEditTodo} updateTodoList={updateTodoList}/>
         </div>
     );
 }

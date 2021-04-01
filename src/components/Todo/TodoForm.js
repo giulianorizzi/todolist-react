@@ -5,9 +5,9 @@ import Form from '../Form';
 function TodoForm({ addTodo, folder, setEditTodo, editTodo, updateTodoList }) {
 
     const [todo, setTodo] = useState({
-        id_task: 0,
+        idTask: 0,
         name: "",
-        status: false
+        completed: false
     })
 
     useEffect(()=>{
@@ -15,9 +15,9 @@ function TodoForm({ addTodo, folder, setEditTodo, editTodo, updateTodoList }) {
             setTodo(editTodo);
         } else {
             setTodo({
-                id_task: 0,
+                idTask: 0,
                 name: "",
-                status: false
+                completed: false
             })
         }
     }, [editTodo])
@@ -31,7 +31,7 @@ function TodoForm({ addTodo, folder, setEditTodo, editTodo, updateTodoList }) {
         todo.folder = folder;
         if(todo.name && !editTodo) {
             TodoService.post(todo).then(
-                data => addTodo({...todo, id_task: data.id_task})
+                data => addTodo({...todo, idTask: data.idTask})
             );
             setTodo({...todo, name:""});
         } else {

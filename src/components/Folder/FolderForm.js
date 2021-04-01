@@ -5,7 +5,7 @@ import Form from '../Form';
 function FolderForm({ addFolder }) {
 
     const [folder, setFolder] = useState({
-        id_folder: 0,
+        idFolder: 0,
         name: ""
     })
 
@@ -17,7 +17,7 @@ function FolderForm({ addFolder }) {
         e.preventDefault();
         if(folder.name ) {
             FolderService.post(folder).then(
-                data => addFolder({...folder, id_folder: data.id_folder})
+                data => addFolder({...folder, idFolder: data.idFolder})
             );
             setFolder({...folder, name:""});
         }
