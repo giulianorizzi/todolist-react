@@ -9,17 +9,25 @@ function FolderForm({ addFolder }) {
         name: ""
     })
 
+    const [formError, setFormError] = useState({
+        error: 0,
+        message: ""
+    })
+
     const eventoCambiarInput = (e) => {
         setFolder({ ...folder, name: e.target.value });
     }
 
     const eventoSubmit = (e) => {
         e.preventDefault();
-        if(folder.name ) {
+        if(folder.name) {
             FolderService.post(folder).then(
                 data => addFolder({...folder, idFolder: data.idFolder})
             );
             setFolder({...folder, name:""});
+            setFormError({error:0, message:""});
+        } else {
+            setFormError({error:1, message:"Enter the Folder Name"});
         }
     }
 
@@ -28,6 +36,7 @@ function FolderForm({ addFolder }) {
             eventoSubmit={eventoSubmit} 
             eventoCambiarInput={eventoCambiarInput} 
             name={folder.name}
+            error={formError}
         />
     );
 }

@@ -10,6 +10,11 @@ function TodoForm({ addTodo, folder, setEditTodo, editTodo, updateTodoList }) {
         completed: false
     })
 
+    const [formError, setFormError] = useState({
+        error: 0,
+        message: ""
+    })
+
     useEffect(()=>{
         if(editTodo){
             setTodo(editTodo);
@@ -29,15 +34,20 @@ function TodoForm({ addTodo, folder, setEditTodo, editTodo, updateTodoList }) {
     const eventoSubmit = (e) => {
         e.preventDefault();
         todo.folder = folder;
-        if(todo.name && !editTodo) {
-            TodoService.post(todo).then(
-                data => addTodo({...todo, idTask: data.idTask})
-            );
-            setTodo({...todo, name:""});
+        if(todo.name){
+            if(!editTodo) {
+                TodoService.post(todo).then(
+                    data => addTodo({...todo, idTask: data.idTask})
+                );
+                setTodo({...todo, name:""});
+            } else {
+                TodoService.update(todo);
+                updateTodoList(todo);
+                setEditTodo("");
+            }
+            setFormError({error:0, message:""});
         } else {
-            TodoService.update(todo);
-            updateTodoList(todo);
-            setEditTodo("");
+            setFormError({error:1, message:"Enter the Task Name"});
         }
     }
 
@@ -47,6 +57,7 @@ function TodoForm({ addTodo, folder, setEditTodo, editTodo, updateTodoList }) {
             eventoCambiarInput={eventoCambiarInput} 
             name={todo.name}
             edit={editTodo}
+            error={formError}
         />
     );
 }
