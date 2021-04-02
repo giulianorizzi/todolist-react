@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import FolderService from '../../service/FolderService';
 import FolderList from './FolderList';
 import FolderForm from './FolderForm';
+import Banner from '../Banner';
 
 function FolderContainer() {
     const [folders, setFolders] = useState([]);
@@ -28,9 +29,7 @@ function FolderContainer() {
 
     return (
         <div className="container mt-4 p-4 bg-light">
-            <div className="h1 bg-dark text-white p-2">
-                Folders
-            </div>
+            <Banner />
             <hr />
             <FolderForm addFolder={addFolder}/>
             <FolderList folders={folders} deleteFolder={deleteFolder}/>

@@ -5,8 +5,7 @@ import FolderService from '../../service/FolderService';
 function Folder({ folder, deleteFolder }) {
 
     const urlParam = { 
-        pathname: "/folder/"+folder.idFolder, 
-        param1: folder 
+        pathname: `/folder/${folder.idFolder}`
     };
 
     const eventoDeleteFolder = (idFolder) => {

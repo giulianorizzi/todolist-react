@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
 import FolderService from '../../service/FolderService';
-import {Link} from 'react-router-dom';
+import Banner from '../Banner';
 
 function TodoContainer({ match }) {
     const [folder, setFolder] = useState({
@@ -47,9 +47,7 @@ function TodoContainer({ match }) {
 
     return (
         <div className="container mt-4 p-4 bg-light">
-            <div className="h1 bg-dark text-white p-2">
-                <Link to={"/"}>Folders</Link> / {folder.name}
-            </div>
+            <Banner folder={folder}/>
             <hr />
             <TodoForm addTodo={addTodo} folder={folder} editTodo={editTodo} setEditTodo={setEditTodo} updateTodoList={updateTodoList}/>
             <TodoList todos={todos} folder={folder} setEditTodo={setEditTodo} updateTodoList={updateTodoList}/>
